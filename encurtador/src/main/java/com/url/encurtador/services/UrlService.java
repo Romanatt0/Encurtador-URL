@@ -5,6 +5,7 @@ import com.url.encurtador.DTOs.UrlResponseDTO;
 import com.url.encurtador.exceptions.UrlAlreadyExistsException;
 import com.url.encurtador.models.UrlModel;
 import com.url.encurtador.repositories.UrlRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,12 @@ public class UrlService {
         UrlModel saved = repository.save(model);
 
         return new UrlResponseDTO(saved.getUrl(), saved.getUrlEncurtada());
+    }
+
+    public UrlResponseDTO findByUrlEncurtada(String urlEncurtada) {
+        UrlModel model = repository.findByUrlEncurtada(urlEncurtada)
+                .orElseThrow(() -> new EntityNotFoundException("URL encurtada não encontrada: " + urlEncurtada));
+
+        return new UrlResponseDTO(model.getUrl(), model.getUrlEncurtada());
     }
 }

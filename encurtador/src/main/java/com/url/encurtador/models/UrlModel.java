@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.URL;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "endereco")
+@Table(name = "url_encurtada")
 public class UrlModel {
 
     @Id
