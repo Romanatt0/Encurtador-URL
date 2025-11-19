@@ -18,7 +18,7 @@ public class UrlService {
         this.repository = repository;
     }
 
-    public UrlResponseDTO encurtarUrl(UrlRequestDTO request) throws UrlAlreadyExistsException {
+    public UrlResponseDTO encurtarUrl(UrlRequestDTO request) {
 
         if (repository.existsByUrlEncurtada(request.urlEncurtada())) {
             throw new UrlAlreadyExistsException("A URL encurtada já está em uso: " + request.urlEncurtada());
