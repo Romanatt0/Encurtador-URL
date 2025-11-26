@@ -30,13 +30,13 @@ public class UrlService {
 
         UrlModel saved = repository.save(model);
 
-        return new UrlResponseDTO(saved.getUrl(), saved.getUrlEncurtada());
+        return new UrlResponseDTO(saved.getUrl(), saved.getUrlEncurtada(), saved.getDataExpiracao());
     }
 
     public UrlResponseDTO findByUrlEncurtada(String urlEncurtada) {
         UrlModel model = repository.findByUrlEncurtada(urlEncurtada)
                 .orElseThrow(() -> new EntityNotFoundException("URL encurtada não encontrada: " + urlEncurtada));
 
-        return new UrlResponseDTO(model.getUrl(), model.getUrlEncurtada());
+        return new UrlResponseDTO(model.getUrl(), model.getUrlEncurtada(), model.getDataExpiracao());
     }
 }
