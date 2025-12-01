@@ -16,7 +16,7 @@ public class scheduleExpiredUrl {
         this.repository = repository;
     }
 
-    @Scheduled(fixedDelay = 3000)
+    @Scheduled(fixedDelay = 180000)
     //180000
     public void execute() throws InterruptedException{
         repository.deleteExpired(LocalDate.now());

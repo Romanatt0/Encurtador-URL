@@ -20,6 +20,6 @@ public interface UrlRepository extends JpaRepository<UrlModel, Long> {
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM UrlEncurtada u WHERE u.dataExpiracao < :hoje")
+    @Query("DELETE FROM UrlModel u WHERE u.dataExpiracao < :hoje")
     void deleteExpired(@Param("hoje") LocalDate hoje);
 }
