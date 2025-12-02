@@ -1,24 +1,20 @@
-# Estágio de Build: Usa uma imagem que já tem Maven e JDK prontos
-FROM maven:3.8.5-openjdk-17 AS build
+# Estágio de Build: Usa Maven com JDK 21
+# Mudamos de openjdk-17 para eclipse-temurin-21
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Copia apenas o pom.xml primeiro para aproveitar o cache de dependências
 COPY pom.xml .
-# Baixa as dependências (se o pom.xml não mudou, o Docker pula essa etapa na próxima vez)
 RUN mvn dependency:go-offline
 
-# Copia o código fonte e faz o build
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Estágio Final: Apenas o JRE para rodar a aplicação (imagem leve)
-FROM eclipse-temurin:17-jdk-jammy
+# Estágio Final: Usa JRE 21
+# Mudamos de eclipse-temurin:17 para eclipse-temurin:21
+FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 EXPOSE 8080
 
-# Copia o JAR gerado no estágio anterior
-# NOTA: Verifique se o nome do arquivo gerado na pasta target é realmente esse.
-# O Maven costuma gerar algo como 'nome-versao.jar'. O asterisco ajuda a pegar qualquer .jar.
 COPY --from=build /app/target/*.jar app.jar
 
 ENTRYPOINT [ "java", "-jar", "app.jar" ]
