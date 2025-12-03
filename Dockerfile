@@ -1,20 +1,16 @@
-# Estágio de Build: Usa Maven com JDK 21
-# Mudamos de openjdk-17 para eclipse-temurin-21
-FROM maven:3.9.6-eclipse-temurin-21 AS build
-WORKDIR /app
+FROM ubuntu:latest AS build
 
-COPY pom.xml .
-RUN mvn dependency:go-offline
+RUN apt-get update
+RUN apt-get install openjdk-21-jdk -y
+COPY . .
 
-COPY src ./src
-RUN mvn clean package -DskipTests
+RUN apt-get install maven -y
+RUN mvn clean install
 
-# Estágio Final: Usa JRE 21
-# Mudamos de eclipse-temurin:17 para eclipse-temurin:21
-FROM eclipse-temurin:21-jre-jammy
-WORKDIR /app
+FROM openjdk:21-jdk-slim
+
 EXPOSE 8080
 
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build target/encurtador-0.0.1-SNAPSHOT.jar app.jar 
 
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+ENTRYPOINT ["java", "-jar", "app.jar"]
