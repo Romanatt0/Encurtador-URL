@@ -34,7 +34,6 @@ public class UrlModel {
     @Column(name = "urlEncurtada", unique = true, nullable = false )
     private String urlEncurtada;
 
-    @NotBlank
     @Column(name = "data", nullable = false)
     private LocalDate dataExpiracao = LocalDate.now().plusMonths(3);;
 }
