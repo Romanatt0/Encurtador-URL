@@ -2,7 +2,6 @@ package com.url.encurtador.controllers;
 
 import com.url.encurtador.DTOs.UrlRequestDTO;
 import com.url.encurtador.DTOs.UrlResponseDTO;
-import com.url.encurtador.exceptions.UrlAlreadyExistsException;
 import com.url.encurtador.services.UrlService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +25,11 @@ public class UrlController {
     }
 
     @GetMapping("/{urlEncurtada}")
-    public ResponseEntity<UrlResponseDTO>redirecionar(@PathVariable String urlEncurtada){
-
+    public ResponseEntity<UrlResponseDTO> redirecionar(@PathVariable String urlEncurtada) {
         UrlResponseDTO dto = urlService.findByUrlEncurtada(urlEncurtada);
-
         return ResponseEntity.status(HttpStatus.FOUND)
                 .location(URI.create(dto.url()))
                 .build();
     }
-
-
 }
+

@@ -6,16 +6,17 @@ import com.url.encurtador.exceptions.UrlAlreadyExistsException;
 import com.url.encurtador.models.UrlModel;
 import com.url.encurtador.repositories.UrlRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UrlService {
 
     private final UrlRepository repository;
+    private final UrlMetricService metricService;
 
-    public UrlService(UrlRepository repository) {
+    public UrlService(UrlRepository repository, UrlMetricService metricService) {
         this.repository = repository;
+        this.metricService = metricService;
     }
 
     public UrlResponseDTO encurtarUrl(UrlRequestDTO request) {
@@ -36,6 +37,8 @@ public class UrlService {
     public UrlResponseDTO findByUrlEncurtada(String urlEncurtada) {
         UrlModel model = repository.findByUrlEncurtada(urlEncurtada)
                 .orElseThrow(() -> new EntityNotFoundException("URL encurtada não encontrada: " + urlEncurtada));
+
+        metricService.incrementarAcesso(model);
 
         return new UrlResponseDTO(model.getUrl(), model.getUrlEncurtada(), model.getDataExpiracao());
     }

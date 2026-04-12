@@ -7,19 +7,16 @@ import lombok.*;
 import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDate;
-import java.util.Date;
-
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "url_encurtada")
 public class UrlModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     @Column(name = "id")
     private Long id;
 
@@ -35,5 +32,5 @@ public class UrlModel {
     private String urlEncurtada;
 
     @Column(name = "data", nullable = false)
-    private LocalDate dataExpiracao = LocalDate.now().plusMonths(3);;
+    private LocalDate dataExpiracao = LocalDate.now().plusMonths(3);
 }

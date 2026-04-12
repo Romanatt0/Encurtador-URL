@@ -32,13 +32,14 @@ public class QRCodeService {
         return baos.toByteArray();
     }
 
-    public Optional<byte[]> getQRCodeByUrlEncurtada(String codigo) {
+    public Optional<byte[]> getQRCodeByUrlEncurtada(String codigo, String baseUrl) {
         Optional<UrlModel> urlModel = urlRepository.findByUrlEncurtada(codigo);
         if (urlModel.isEmpty()) {
             return Optional.empty();
         }
         try {
-            byte[] qrCode = generateQRCodeImage(urlModel.get().getUrl(), 300, 300);
+            String redirectUrl = baseUrl + "/" + urlModel.get().getUrlEncurtada();
+            byte[] qrCode = generateQRCodeImage(redirectUrl, 300, 300);
             return Optional.of(qrCode);
         } catch (Exception e) {
             return Optional.empty();
